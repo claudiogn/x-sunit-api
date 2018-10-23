@@ -4,8 +4,9 @@ class Survivor < ApplicationRecord
 	validates :age,:latitude, :longitude, numericality: true
 	validates :gender, inclusion: {in: ["male", "female", "other"], message: "%{value} is not a valid gender"}
 
-	def is_abducted?
-		self.abducted ? true : false
-	end
+
+	scope :non_abducted, -> {where(abducted: true)}
+	scope :abducted, -> {where(abducted: false)}
+
 end
 # 
