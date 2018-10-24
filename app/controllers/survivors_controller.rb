@@ -8,7 +8,12 @@ class SurvivorsController < ApplicationController
     filter_params(params).each do |key,value|
       @survivors = @survivors.public_send(key,value) if value.present?
     end
-    render json: @survivors
+    if @survivors.empty?
+      response = {warning: "no survivors found"}
+      render json: response
+    else
+      render json: @survivors
+    end
   end
 
   # GET /survivors/1
