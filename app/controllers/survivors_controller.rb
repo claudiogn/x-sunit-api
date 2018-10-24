@@ -5,14 +5,29 @@ class SurvivorsController < ApplicationController
   # GET /survivors
   def index
     @survivors = Survivor.all.order(:name)
+    # Doing some query parameter
     filter_params(params).each do |key,value|
       @survivors = @survivors.public_send(key,value) if value.present?
     end
+
+
+    params_fields = params[:fields] if params[:fields].present?
+    unless params_fields.nil? || params_fields.empty?
+      fields = ["id", "name", "age", "flags", "abducted", "gender", "latitude", "longitude", "created_at", "updated_at"]
+      valid_fields = []
+      params_fields.split(",").each do |v|
+        if fields.include?(v.downcase) 
+          valid_fields.push(v.downcase.to_sym)
+        end
+      end
+    end
+
     if @survivors.empty?
       response = {warning: "no survivors found"}
       render json: response
     else
-      render json: @survivors
+
+      render json: @survivors, only: valid_fields
     end
   end
 
@@ -24,7 +39,6 @@ class SurvivorsController < ApplicationController
   # POST /survivors
   def create
     @survivor = Survivor.new(survivor_params)
-
     if @survivor.save
       render json: @survivor, status: :created, location: @survivor
     else
