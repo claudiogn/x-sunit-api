@@ -4,8 +4,10 @@ class SurvivorsController < ApplicationController
 
   # GET /survivors
   def index
-    @survivors = Survivor.all
-
+    @survivors = Survivor.all.order(:name)
+    filter_params(params).each do |key,value|
+      @survivors = @survivors.public_send(key,value) if value.present?
+    end
     render json: @survivors
   end
 
@@ -84,6 +86,10 @@ class SurvivorsController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def survivor_params
       params.require(:survivor).permit(:name, :age, :gender, :latitude, :longitude, :flags, :abducted)
+    end
+
+    def filter_params(params)
+      params.slice(:by_name, :age, :gender, :latitude, :longitude)
     end
 
     def update_params
