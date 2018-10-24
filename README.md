@@ -34,29 +34,5 @@ Survivor attributes:
 * `POST /survivors/:id/report` Reports the survivor that has id: `:id` as abducted. This survivor will be truly considered abducted after being reported 3 times. No data need to be sent
 * `survivors/statistics` Return percentage of abducted and non-abducted survivors
 
-#Data
+# Data
 If you want to add some survivors for testing purpose just run `rails db:seed`
-
-
-
-
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
