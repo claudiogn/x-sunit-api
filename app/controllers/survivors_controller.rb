@@ -55,6 +55,7 @@ class SurvivorsController < ApplicationController
   # DELETE /survivors/1
   def destroy
     @survivor.destroy
+    render json: @survivor
   end
 
   #GET /survivors/1/report
@@ -92,9 +93,9 @@ class SurvivorsController < ApplicationController
     def set_survivor
       begin
         @survivor = Survivor.find(params[:id])
-      rescue ActiveRecord::RecordNotFound => e
+      rescue ActiveRecord::RecordNotFound
         response = {error: "Survivor not found."}
-        render json: error, status: :not_found
+        render json: response, status: :not_found
       end
     end
 
