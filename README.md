@@ -5,7 +5,7 @@ This is the REST API is responsible for share resources between non-abducted hum
 
 #Requirements
 * Ruby 2.3.4
-* Rails 5.2.1
+* Rails 5.1.6
 * SQLite 3.10
 
 # Survivor
