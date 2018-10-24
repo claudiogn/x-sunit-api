@@ -24,6 +24,7 @@ Survivor attributes:
 #Endpoints
 * `GET /survivors` Lists all registered survivors, orderned by name, with all their parameters. If you want choose the reponse attributes, add a query and paginate the list, add some parameters to the URL:
     * `/survivors?query_field` Set the field you want to filter and its value. Exemple: `/survivors?gender=female&age=33`
+    OBS: If you want to use query by name you should use `/survivors?by_name=doe`
     * `/survivors?fields` Set the fields you want to display. Exemple: `/survivors?fields=name,abducted`
     * `/survivors?per_page` Set the number of records you want to return per the page. Exemple `/survivors?per_page=3`
     * `/survivors?page` Set the page you want to return. Exemple `/survivors?per_page=3`

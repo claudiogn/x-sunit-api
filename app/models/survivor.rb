@@ -8,7 +8,7 @@ class Survivor < ApplicationRecord
 	scope :abducted, -> {where(abducted: false)}
 	scope :age, -> (age) {where(age: age)}
 	scope :gender, -> (gender) {where(gender: gender)}
-	scope :by_name, -> (name) {where(name: name)}
+	scope :by_name, -> (name) {where("name like ?", "#{name}%")}
 	scope :latitude, -> (latitude) {where(latitude: latitude)}
 	scope :longitude, -> (longitude) {where(longitude: longitude)}
 
