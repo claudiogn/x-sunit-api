@@ -4,30 +4,26 @@ class SurvivorsController < ApplicationController
 
   # GET /survivors
   def index
-    @survivors = Survivor.all.order(:name)
+    # Paginate
+    page = params[:page] ? params[:page] : 1
+    per_page = params[:per_page] ? params[:per_page] : Survivor.all.count
+    @survivors = Survivor.all.order(:name).page(page).per(per_page)
+
     # Doing some query parameter
     filter_params(params).each do |key,value|
       @survivors = @survivors.public_send(key,value) if value.present?
     end
 
-
+    # Seting response json fields
     params_fields = params[:fields] if params[:fields].present?
-    unless params_fields.nil? || params_fields.empty?
-      fields = ["id", "name", "age", "flags", "abducted", "gender", "latitude", "longitude", "created_at", "updated_at"]
-      valid_fields = []
-      params_fields.split(",").each do |v|
-        if fields.include?(v.downcase) 
-          valid_fields.push(v.downcase.to_sym)
-        end
-      end
-    end
+    response_fields = response_fields(params_fields)
 
     if @survivors.empty?
       response = {warning: "no survivors found"}
       render json: response
     else
 
-      render json: @survivors, only: valid_fields
+      render json: @survivors, only: response_fields
     end
   end
 
@@ -117,5 +113,18 @@ class SurvivorsController < ApplicationController
 
     def percentage(portion, total)
       percentage = (portion.to_f/total)*100
+    end
+
+    def response_fields(params_fields)
+      unless params_fields.nil? || params_fields.empty?
+        fields = ["id", "name", "age", "flags", "abducted", "gender", "latitude", "longitude", "created_at", "updated_at"]
+        valid_fields = []
+        params_fields.split(",").each do |v|
+          if fields.include?(v.downcase) 
+            valid_fields.push(v.downcase.to_sym)
+          end
+        end
+      end
+      return valid_fields
     end
 end
